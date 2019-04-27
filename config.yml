@@ -1,4 +1,9 @@
+# Specifies the path where the wikipedia dump file lies.
 PATH_WIKI_XML: '/media/black/ssd/'
+# Specifies the path where the data chunk files are going to be placed.
 PATH_INDEX_FILES: '/media/black/ssd/index'
+# Specifes the name of the wikipedia dump file in xml format.
 FILENAME_WIKI: 'dump.xml'
+# Specifies the name of the file to store the index data in.
+# The File will be placed into the PATH_WIKI_XML directory.
 FILENAME_INDEX: 'index.yml'

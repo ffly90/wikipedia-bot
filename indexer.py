@@ -4,7 +4,7 @@
 Script to produce Index in Order to make searching Wikipedia dump xml file faster.
 
 The Script takes a Wikipedia dump file and iterates over the lines in the file without 
-loading its content into the memory at once. It then takes some informations like title,
+loading its content into the memory at once. It then takes some information like title,
 id, text and whether or not it is a redirection to another article and stores them into
 a file.
 The articles are stored in files of 1000 each in a special index folder.
@@ -42,10 +42,6 @@ def strip_tag(tag):
     Returns:
         str: returns stripped tag if successful. Closes Program if unexpected
         behavior occurs.
-
-    .. _PEP 484:
-        https://www.python.org/dev/peps/pep-0484/
-
     """
     try:
         if len(tag) > 15:
@@ -56,35 +52,40 @@ def strip_tag(tag):
         exit(1)
 
 def indexer(config):
-    """Example function with types documented in the docstring.
+    """
+    Function to create article chunks and index file.
 
-    `PEP 484`_ type annotations are supported. If attribute, parameter, and
-    return types are annotated according to `PEP 484`_, they do not need to be
-    included in the docstring:
+    This function opens a Wikipedia dump file and iterates over the tags of the xml.
+    It then writes information the title, id, text and whether or not it is a 
+    redirection to another article and stores them into a data chunk file.
+    The articles are stored in chunk files of 1000 articles each.
+    Also an entry to an index file is made containing title, filenumber, id and if present 
+    the title of the article it redirects to:
 
     Args:
-        param1 (int): The first parameter.
-        param2 (str): The second parameter.
+        config (dict): Dictionary containing the information form the config file
 
     Returns:
-        bool: The return value. True for success, False otherwise.
-
-    .. _PEP 484:
-        https://www.python.org/dev/peps/pep-0484/
-
+        int: 0 if successful
     """
     progressCounter = 0
     fileIndex = 0
     articleCounter = 0
+
+    # creates first data chunk file
     indexFileFH = open(os.path.join(config['PATH_INDEX_FILES'], '.'.join([str(fileIndex), "yml"])), "w")
+
     with open(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_INDEX']), "w") as indexFH:
+        # iterates over the wikipedia dump xml tag by tag
         for event, elem in etree.iterparse(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_WIKI']), events=('start', 'end')):
             tagName = strip_tag(elem.tag)
+            # creates new data chunk file if the the 1000 articles have been written to the actual file
             if articleCounter == 1000:
                 indexFileFH.close()
                 fileIndex += 1
                 indexFileFH = open(os.path.join(config['PATH_INDEX_FILES'], '.'.join([str(fileIndex), "yml"])), "w")
                 articleCounter = 0
+            # initializes all variables for each article
             if event == 'start' and tagName == 'page':
                 inRevision = False
                 notAnArticle = False
@@ -93,7 +94,7 @@ def indexer(config):
                 ns = None
             elif event == 'start':
                 if tagName == 'revision':
-                    #Making sure to only obtain the articles id
+                    # Making sure to only obtain the id of article but not the revision id
                     inRevision = True
                 elif tagName == 'title':
                     title = elem.text
@@ -102,17 +103,21 @@ def indexer(config):
                 elif tagName == 'redirect':
                     redirect = elem.attrib['title']
                 elif tagName == 'ns':
+                    # the namespaces determine the page type. Only the namespace 0 contains article information
+                    # the rest of the pages is going to be discarded. 
                     try:
                         ns = int(elem.text)
                         if ns != 0:
                             notAnArticle = True
                     except TypeError as err:
+                        # sometimes the namespace is not specified. In this case the pages' inforation is not stored
                         print(err)
                         notAnArticle = True
                 elif tagName == 'text' and event == "start":
                     text = elem.text
             else:
                 if tagName == 'page' and not notAnArticle:
+                    # if a page is parsed all the way through, the obtained data is stored.
                     indexData = {
                         title : {
                             'file': fileIndex,
@@ -122,6 +127,7 @@ def indexer(config):
                     }
                     yaml.safe_dump(indexData, indexFH, allow_unicode=True)
                     if redirect is None:
+                        # if the page only contains a redirection it only needs to be stored in the index file
                         articleData = {
                             articleIndex : text
                         }
@@ -129,31 +135,28 @@ def indexer(config):
                         articleCounter +=1
                         progressCounter +=1
                         if progressCounter > 1 and (progressCounter % 100000) == 0:
+                            # prints progress for every 100000 successfully stored articles
                             print("{:,}".format(progressCounter))
-                # Free Memory from Data
+                # Clears the memory of the xml element to prevent the parser to force the system into using swap
                 elem.clear()
+    # closes the last data chunk file
+    indexFileFH.close()
+    return
 
 def main():
-    """Example function with types documented in the docstring.
+    """
+    Main Function.
 
-    `PEP 484`_ type annotations are supported. If attribute, parameter, and
-    return types are annotated according to `PEP 484`_, they do not need to be
-    included in the docstring:
-
-    Args:
-        param1 (int): The first parameter.
-        param2 (str): The second parameter.
+    The main function opens the config file and calls the indexer function:
 
     Returns:
-        bool: The return value. True for success, False otherwise.
-
-    .. _PEP 484:
-        https://www.python.org/dev/peps/pep-0484/
-
+        int: 0 if the script terminated successfully, 1 if an error occurred.
     """
     with open("config.yml","r") as configYaml:
+        # opens config file and stores the information to a variable
         config = yaml.load(configYaml, Loader=yaml.SafeLoader)
     indexer(config)
+    return
 
 if __name__ == "__main__":
    exit(main())
