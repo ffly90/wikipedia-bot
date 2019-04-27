@@ -1,0 +1,4 @@
+PATH_WIKI_XML: '/media/black/ssd/'
+PATH_INDEX_FILES: '/media/black/ssd/index'
+FILENAME_WIKI: 'dump.xml'
+FILENAME_INDEX: 'index.yml'

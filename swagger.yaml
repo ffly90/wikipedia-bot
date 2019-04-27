@@ -1,0 +1,59 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Wikipedia Bot
+  description: A simple API to give a short definition for a search word
+  
+servers: 
+  - url: https://api.eine-andere-welt.org/v1
+
+# Basic authentication
+components:
+  securitySchemes:
+    BasicAuth:
+      type: http
+      scheme: basic
+security:
+  - BasicAuth: []
+
+paths:
+  /articel_names:
+    get:
+      description: returnes a list of articel names that match the given value
+      parameters:
+        - name: word
+          in: query
+          description: Specifies the value to search for in the index list
+          schema:
+            type: string
+      responses:
+        '200':
+        description: Successfully returned a list of search words
+        content:
+          application/json:
+            schema:
+              type: list
+              items:
+                type: object
+                required:
+                  - username
+                properties:
+                  articel_name:
+                    type: string
+                  articel_index:
+                    type: string
+                  
+
+        '400':
+          description: Invalid request
+          content:
+            schema:
+              type: object
+              properties:   
+                message:
+                  type: string
+  /articel_names/{identifier}:
+    get:
+      description: Obtain information about a search word from its unique identifier
+      para
+
