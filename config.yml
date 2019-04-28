@@ -6,4 +6,7 @@ PATH_INDEX_FILES: '/media/black/ssd/index'
 FILENAME_WIKI: 'dump.xml'
 # Specifies the name of the file to store the index data in.
 # The File will be placed into the PATH_WIKI_XML directory.
-FILENAME_INDEX: 'index.yml'
+FILENAME_INDEX: 'index.txt'
+# Specifies the name of the to store the sorted index data in.
+# The File will be placed into the PATH_WIKI_XML directory.
+FILENAME_SORTED_INDEX: 'sorted_index.txt'

@@ -118,14 +118,12 @@ def indexer(config):
             else:
                 if tagName == 'page' and not notAnArticle:
                     # if a page is parsed all the way through, the obtained data is stored.
-                    indexData = {
-                        title : {
-                            'file': fileIndex,
-                            'article': articleIndex,
-                            'redirect': redirect
-                        }
-                    }
-                    yaml.safe_dump(indexData, indexFH, allow_unicode=True)
+                    try:
+                        indexData = "|".join([title.lower(), str(fileIndex), str(articleIndex), str(redirect)]) + "\n"
+                    except AttributeError as err:
+                        print(err)
+                        continue
+                    indexFH.write(indexData)
                     if redirect is None:
                         # if the page only contains a redirection it only needs to be stored in the index file
                         articleData = {
@@ -143,11 +141,32 @@ def indexer(config):
     indexFileFH.close()
     return
 
+def sortIndex(config):
+    """
+    Function to sort the index file by title.
+
+    This function sorts the index file by the title of the articles to make searching it
+    easier. The result is written to the file specified in the config file:
+
+    Args:
+        config (dict): Dictionary containing the information form the config file
+
+    Returns:
+        int: 0 if successful
+    """
+    unsortedIndex = open(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_INDEX']), 'r').readlines()
+    sortedIndex = open(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_SORTED_INDEX']), 'w')
+    # splits every line once by the delimiter to access the title, then sorts them and stores the result
+    for line in sorted(unsortedIndex, key=lambda line: line.rsplit('|', 1)[0]):
+        sortedIndex.write(line)
+    sortedIndex.close()
+    return
+
 def main():
     """
     Main Function.
 
-    The main function opens the config file and calls the indexer function:
+    The main function opens the config file and calls the indexer and the sortIndex function:
 
     Returns:
         int: 0 if the script terminated successfully, 1 if an error occurred.
@@ -156,8 +175,8 @@ def main():
         # opens config file and stores the information to a variable
         config = yaml.load(configYaml, Loader=yaml.SafeLoader)
     indexer(config)
+    sortIndex(config)
     return
 
 if __name__ == "__main__":
    exit(main())
-
