@@ -7,10 +7,9 @@ The Script takes a Wikipedia dump file and iterates over the lines in the file w
 loading its content into the memory at once. It then takes some information like title,
 id, text and whether or not it is a redirection to another article and stores them into
 a file.
-The articles are stored in files of 1000 each in a special index folder.
+The articles are stored in files of 100 each in a special index folder.
 Also an entry to an index file is made containing title, filenumber, id and if present 
 the title of the article it redirects to.
-
 
 Example:
     The script can easily be executed from the commandline and only needs the
@@ -58,7 +57,7 @@ def indexer(config):
     This function opens a Wikipedia dump file and iterates over the tags of the xml.
     It then writes information the title, id, text and whether or not it is a 
     redirection to another article and stores them into a data chunk file.
-    The articles are stored in chunk files of 1000 articles each.
+    The articles are stored in chunk files of 100 articles each.
     Also an entry to an index file is made containing title, filenumber, id and if present 
     the title of the article it redirects to:
 
@@ -79,8 +78,8 @@ def indexer(config):
         # iterates over the wikipedia dump xml tag by tag
         for event, elem in etree.iterparse(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_WIKI']), events=('start', 'end')):
             tagName = strip_tag(elem.tag)
-            # creates new data chunk file if the the 1000 articles have been written to the actual file
-            if articleCounter == 1000:
+            # creates new data chunk file if the the 100 articles have been written to the actual file
+            if articleCounter == 100:
                 indexFileFH.close()
                 fileIndex += 1
                 indexFileFH = open(os.path.join(config['PATH_INDEX_FILES'], '.'.join([str(fileIndex), "yml"])), "w")
@@ -157,8 +156,8 @@ def sortIndex(config):
     unsortedIndex = open(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_INDEX']), 'r').readlines()
     sortedIndex = open(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_SORTED_INDEX']), 'w')
     # splits every line once by the delimiter to access the title, then sorts them and stores the result
-    for line in sorted(unsortedIndex, key=lambda line: line.rsplit('|', 1)[0]):
-        sortedIndex.write(line)
+    for item in sorted(unsortedIndex, key=lambda line: line.split('|', 1)[0]):
+        sortedIndex.write(item)
     sortedIndex.close()
     return
 
