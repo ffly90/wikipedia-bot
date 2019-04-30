@@ -24,6 +24,7 @@ Example:
 
 import os
 import yaml
+import time
 
 def binaryIndexSearch(indexList, searchString):
     first, last = 0, len(indexList) - 1
@@ -48,7 +49,7 @@ def binaryIndexSearch(indexList, searchString):
             else:
                 first = midpoint + 1
         resultIndex = 0
-        while indexList[first + resultIndex][0].startswith(searchString + " ") or indexList[first + resultIndex][0].startswith(searchString + "-"):
+        while indexList[first + resultIndex][0].startswith(searchString) or indexList[first + resultIndex][0].startswith(searchString + "-"):
             results.append(indexList[first + resultIndex][0])
             resultIndex += 1
             found = True
@@ -69,12 +70,17 @@ def getText(config, fileNumber, articleIndex):
 def getInput(config, indexList):
     while True:
         inputValue = input("\tBitte geben Sie einen Suchbegriff ein.\n\tUm das Programm zu beenden geben geben Sie \"Programm beenden\" ein: ")
+        start = time.time()
+        inputValue = inputValue.strip().lower()
         if inputValue == "Programm beenden":
             break
-        searchResult, multipleResults = binaryIndexSearch(indexList, inputValue.strip().lower())
-
+        elif not inputValue:
+            continue
+        searchResult, multipleResults = binaryIndexSearch(indexList, inputValue)
         if not multipleResults and searchResult:
             print(getText(config, searchResult[1], searchResult[2]))
+            end = time.time()
+            print("Suchdauer: " + str(end - start))
         elif multipleResults:
             print("\n".join(["Wähle eines der folgenden Ergebnisse aus:"] + searchResult))
         elif not multipleResults and not searchResult:
@@ -87,7 +93,7 @@ def main():
         # opens config file and stores the information to a variable
         config = yaml.load(configYaml, Loader=yaml.SafeLoader)
     indexList = []
-    with open("/media/black/ssd/sorted_index.txt", 'r') as index:
+    with open(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_SORTED_INDEX']), 'r') as index:
         print("Lade index...")
         for line in index.readlines():
             indexList.append(line.rstrip('\n').split('|'))
@@ -96,3 +102,4 @@ def main():
 
 if __name__ == "__main__":
    exit(main())
+

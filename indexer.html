@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module indexer</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong>indexer</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/black/github/wikipedia-bot/indexer.py">/home/black/github/wikipedia-bot/indexer.py</a></font></td></tr></table>
+    <p><tt>Script&nbsp;to&nbsp;produce&nbsp;Index&nbsp;in&nbsp;Order&nbsp;to&nbsp;make&nbsp;searching&nbsp;Wikipedia&nbsp;dump&nbsp;xml&nbsp;file&nbsp;faster.<br>
+&nbsp;<br>
+The&nbsp;Script&nbsp;takes&nbsp;a&nbsp;Wikipedia&nbsp;dump&nbsp;file&nbsp;and&nbsp;iterates&nbsp;over&nbsp;the&nbsp;lines&nbsp;in&nbsp;the&nbsp;file&nbsp;without&nbsp;<br>
+loading&nbsp;its&nbsp;content&nbsp;into&nbsp;the&nbsp;memory&nbsp;at&nbsp;once.&nbsp;It&nbsp;then&nbsp;takes&nbsp;some&nbsp;information&nbsp;like&nbsp;title,<br>
+id,&nbsp;text&nbsp;and&nbsp;whether&nbsp;or&nbsp;not&nbsp;it&nbsp;is&nbsp;a&nbsp;redirection&nbsp;to&nbsp;another&nbsp;article&nbsp;and&nbsp;stores&nbsp;them&nbsp;into<br>
+a&nbsp;file.<br>
+The&nbsp;articles&nbsp;are&nbsp;stored&nbsp;in&nbsp;files&nbsp;of&nbsp;100&nbsp;each&nbsp;in&nbsp;a&nbsp;special&nbsp;index&nbsp;folder.<br>
+Also&nbsp;an&nbsp;entry&nbsp;to&nbsp;an&nbsp;index&nbsp;file&nbsp;is&nbsp;made&nbsp;containing&nbsp;title,&nbsp;filenumber,&nbsp;id&nbsp;and&nbsp;if&nbsp;present&nbsp;<br>
+the&nbsp;title&nbsp;of&nbsp;the&nbsp;article&nbsp;it&nbsp;redirects&nbsp;to.<br>
+&nbsp;<br>
+Example:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;The&nbsp;script&nbsp;can&nbsp;easily&nbsp;be&nbsp;executed&nbsp;from&nbsp;the&nbsp;commandline&nbsp;and&nbsp;only&nbsp;needs&nbsp;the<br>
+&nbsp;&nbsp;&nbsp;&nbsp;config&nbsp;file&nbsp;to&nbsp;contain&nbsp;the&nbsp;necessary&nbsp;information::<br>
+&nbsp;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$&nbsp;python&nbsp;indexer.py<br>
+&nbsp;<br>
+..&nbsp;Docstrings&nbsp;according&nbsp;to&nbsp;_PEP&nbsp;484:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;https://www.python.org/dev/peps/pep-0484/</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="lxml.etree.html">lxml.etree</a><br>
+</td><td width="25%" valign=top><a href="os.html">os</a><br>
+</td><td width="25%" valign=top><a href="pydoc.html">pydoc</a><br>
+</td><td width="25%" valign=top><a href="yaml.html">yaml</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-indexer"><strong>indexer</strong></a>(config)</dt><dd><tt>Function&nbsp;to&nbsp;create&nbsp;article&nbsp;chunks&nbsp;and&nbsp;index&nbsp;file.<br>
+&nbsp;<br>
+This&nbsp;function&nbsp;opens&nbsp;a&nbsp;Wikipedia&nbsp;dump&nbsp;file&nbsp;and&nbsp;iterates&nbsp;over&nbsp;the&nbsp;tags&nbsp;of&nbsp;the&nbsp;xml.<br>
+It&nbsp;then&nbsp;writes&nbsp;information&nbsp;the&nbsp;title,&nbsp;id,&nbsp;text&nbsp;and&nbsp;whether&nbsp;or&nbsp;not&nbsp;it&nbsp;is&nbsp;a&nbsp;<br>
+redirection&nbsp;to&nbsp;another&nbsp;article&nbsp;and&nbsp;stores&nbsp;them&nbsp;into&nbsp;a&nbsp;data&nbsp;chunk&nbsp;file.<br>
+The&nbsp;articles&nbsp;are&nbsp;stored&nbsp;in&nbsp;chunk&nbsp;files&nbsp;of&nbsp;100&nbsp;articles&nbsp;each.<br>
+Also&nbsp;an&nbsp;entry&nbsp;to&nbsp;an&nbsp;index&nbsp;file&nbsp;is&nbsp;made&nbsp;containing&nbsp;title,&nbsp;filenumber,&nbsp;id&nbsp;and&nbsp;if&nbsp;present&nbsp;<br>
+the&nbsp;title&nbsp;of&nbsp;the&nbsp;article&nbsp;it&nbsp;redirects&nbsp;to:<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;config&nbsp;(dict):&nbsp;Dictionary&nbsp;containing&nbsp;the&nbsp;information&nbsp;form&nbsp;the&nbsp;config&nbsp;file<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;0&nbsp;if&nbsp;successful</tt></dd></dl>
+ <dl><dt><a name="-main"><strong>main</strong></a>()</dt><dd><tt>Main&nbsp;Function.<br>
+&nbsp;<br>
+The&nbsp;main&nbsp;function&nbsp;opens&nbsp;the&nbsp;config&nbsp;file&nbsp;and&nbsp;calls&nbsp;the&nbsp;indexer&nbsp;and&nbsp;the&nbsp;sortIndex&nbsp;function:<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;0&nbsp;if&nbsp;the&nbsp;script&nbsp;terminated&nbsp;successfully,&nbsp;1&nbsp;if&nbsp;an&nbsp;error&nbsp;occurred.</tt></dd></dl>
+ <dl><dt><a name="-sortIndex"><strong>sortIndex</strong></a>(config)</dt><dd><tt>Function&nbsp;to&nbsp;sort&nbsp;the&nbsp;index&nbsp;file&nbsp;by&nbsp;title.<br>
+&nbsp;<br>
+This&nbsp;function&nbsp;sorts&nbsp;the&nbsp;index&nbsp;file&nbsp;by&nbsp;the&nbsp;title&nbsp;of&nbsp;the&nbsp;articles&nbsp;to&nbsp;make&nbsp;searching&nbsp;it<br>
+easier.&nbsp;The&nbsp;result&nbsp;is&nbsp;written&nbsp;to&nbsp;the&nbsp;file&nbsp;specified&nbsp;in&nbsp;the&nbsp;config&nbsp;file:<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;config&nbsp;(dict):&nbsp;Dictionary&nbsp;containing&nbsp;the&nbsp;information&nbsp;form&nbsp;the&nbsp;config&nbsp;file<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;int:&nbsp;0&nbsp;if&nbsp;successful</tt></dd></dl>
+ <dl><dt><a name="-strip_tag"><strong>strip_tag</strong></a>(tag)</dt><dd><tt>Function&nbsp;to&nbsp;strip&nbsp;the&nbsp;tag&nbsp;provided&nbsp;by&nbsp;the&nbsp;xml&nbsp;parser.<br>
+&nbsp;<br>
+This&nbsp;function&nbsp;takes&nbsp;the&nbsp;tag&nbsp;the&nbsp;is&nbsp;returned&nbsp;by&nbsp;the&nbsp;xml&nbsp;parser&nbsp;and&nbsp;gets&nbsp;rid<br>
+of&nbsp;the&nbsp;leading&nbsp;string&nbsp;the&nbsp;contains&nbsp;the&nbsp;URL&nbsp;of&nbsp;the&nbsp;revision&nbsp;of&nbsp;the&nbsp;wikipedia<br>
+dump.&nbsp;Some&nbsp;tags&nbsp;to&nbsp;not&nbsp;contain&nbsp;the&nbsp;leading&nbsp;URL&nbsp;string,&nbsp;they&nbsp;are&nbsp;identified&nbsp;<br>
+by&nbsp;being&nbsp;shorter&nbsp;than&nbsp;the&nbsp;others.&nbsp;Those&nbsp;tags&nbsp;are&nbsp;returned&nbsp;without&nbsp;further<br>
+manipulation:<br>
+&nbsp;<br>
+Args:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;tag&nbsp;(str):&nbsp;Contains&nbsp;the&nbsp;tag&nbsp;the&nbsp;is&nbsp;returned&nbsp;by&nbsp;the&nbsp;xml&nbsp;parser.<br>
+&nbsp;<br>
+Returns:<br>
+&nbsp;&nbsp;&nbsp;&nbsp;str:&nbsp;returns&nbsp;stripped&nbsp;tag&nbsp;if&nbsp;successful.&nbsp;Closes&nbsp;Program&nbsp;if&nbsp;unexpected<br>
+&nbsp;&nbsp;&nbsp;&nbsp;behavior&nbsp;occurs.</tt></dd></dl>
+</td></tr></table>
+</body></html>
