@@ -6,32 +6,39 @@ import json
 
 #from tkinter import Tk, Entry, Button, INSERT
 
-with open("config_frontend.yml","r") as configYaml:
-    # opens config file and stores the information to a variable
-    config = yaml.load(configYaml, Loader=yaml.SafeLoader)
 
-def updateText(text):
+
+def updateText(text, textField):
     textField.delete("1.0", "end")
     textField.insert(tkinter.END, text)
 
-def print_content():
-    payload = {'searchVal':entry.get()}
+def print_content(short, entry, config, textField):
+    payload = {'searchVal': entry.get(), 'short': short}
     req = requests.post(":".join(["http://"+config['HOSTNAME'],config['PORT']+"/definition/"]), data=payload)
-    updateText(req.json())
+    updateText(req.json(), textField)
 
+def main():
+    with open("config_frontend.yml","r") as configYaml:
+        # opens config file and stores the information to a variable
+        config = yaml.load(configYaml, Loader=yaml.SafeLoader)
+    
+    window = tkinter.Tk()
 
-window = tkinter.Tk()
+    window.title("Wikipedia-Bot")
 
-window.title("Wikipedia-Bot")
+    entry = tkinter.Entry(window)
+    entry.insert(tkinter.INSERT, 'Suchwort')
+    textField = tkinter.Text(window, height=30, width=60, wrap='word')
+    button1 = tkinter.Button(window, text='Short Definition', command= lambda: print_content(True, entry, config, textField))
+    button2 = tkinter.Button(window, text='Long Definition', command= lambda: print_content(False, entry, config, textField))
 
-entry = tkinter.Entry(window)
-entry.insert(tkinter.INSERT, 'Hello,world!')
-button = tkinter.Button(window, text='Print content', command=print_content)
-textField = tkinter.Text(window, height=40, width=60)
+    # place widgets
+    textField.pack()
+    entry.pack()
+    button1.pack()
+    button2.pack()
 
-# place widgets
-textField.pack()
-entry.pack()
-button.pack()
+    tkinter.mainloop()
 
-tkinter.mainloop()
+if __name__ == "__main__":
+   exit(main())

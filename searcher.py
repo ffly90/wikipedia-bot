@@ -30,6 +30,7 @@ def binaryIndexSearch(indexList, searchString):
     first, last = 0, len(indexList) - 1
     found = False
     results = []
+    searchString = searchString.lower().strip()
     while first < last and not found:
         pos = 0
         midpoint = (first + last) >> 1
@@ -71,7 +72,6 @@ def getInput(config, indexList):
     while True:
         inputValue = input("\tBitte geben Sie einen Suchbegriff ein.\n\tUm das Programm zu beenden geben geben Sie \"Programm beenden\" ein: ")
         start = time.time()
-        inputValue = inputValue.strip().lower()
         if inputValue == "Programm beenden":
             break
         elif not inputValue:

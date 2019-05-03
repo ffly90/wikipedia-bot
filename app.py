@@ -19,22 +19,29 @@ class Definition(Resource):
         searchResult, multipleResults = searcher.binaryIndexSearch(self.__indexList, args['searchVal'])
         if not multipleResults and searchResult:
             textStr = searcher.getText(self.__config, searchResult[1], searchResult[2])
-            textList = textStr.split('\n\n')
-            if args['short'] == 'short':
-                for item in textList:
-                    if  "'''" in item:
-                        if "\n" in item:
-                            item = item.split('\n')[-1]
-                        break
-            item = re.sub("\]|\[|<[^>]*>(.*?)<[^>]*>|'|{{(.*?)}}", "", item)
-            return item, 200
+            textStr = re.sub("\]|\[|<[^>]*>(.*?)<[^>]*>|'|{{(.*?)}}|Datei\:(.*?)\\n", "", textStr)
+            if args['short'] == 'True':
+                textStr = stringShortener(textStr)
+            return textStr, 200
         elif multipleResults:
             return "\n".join(["Wähle eines der folgenden Ergebnisse aus:"] + searchResult), 200
         elif not multipleResults and not searchResult:
             return "Zum übergebenen Suchbegriff wurde keine Definition gefunden. Bitte versuchen Sie es mit einem anderen Begriff erneut.", 404
 
-#def stringFormat(text):
-
+def stringShortener(textStr):
+    textList = textStr.split('\n\n')
+    found = False
+    for i, item in enumerate(textList):
+        if not item.strip():
+            del textList[i]
+            continue
+        if  "'''" in item:
+            found = True
+            break
+    if found:
+        return item
+    else:
+        return textList[0]
 
 def main():
     app = Flask(__name__)
@@ -48,7 +55,7 @@ def main():
         print("Lade index...")
         for line in index.readlines():
             indexList.append(line.rstrip('\n').split('|'))
-    api.add_resource(Definition, "/definitions/short", resource_class_kwargs={'indexList': indexList, 'config': config})
+    api.add_resource(Definition, "/definition/", resource_class_kwargs={'indexList': indexList, 'config': config})
     app.run(debug=True)
     return
 
