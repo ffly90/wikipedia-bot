@@ -43,11 +43,11 @@ def stringShortener(textStr):
     else:
         return textList[0]
 
-def main():
+def main(configFilePath=".config/config_searcher.yml"):
     app = Flask(__name__)
     api = Api(app)
 
-    with open("config.yml","r") as configYaml:
+    with open(configFilePath,"r") as configYaml:
         # opens config file and stores the information to a variable
         config = yaml.load(configYaml, Loader=yaml.SafeLoader)
     indexList = []

@@ -31,37 +31,50 @@ def binaryIndexSearch(indexList, searchString):
     found = False
     results = []
     searchString = searchString.lower().strip()
-    while first < last and not found:
-        pos = 0
-        midpoint = (first + last) >> 1
-        if indexList[midpoint][0] == searchString:
-            pos = midpoint
-            found = True
-        elif searchString <= indexList[midpoint][0]:
-            last = midpoint
-        else:
-            first = midpoint + 1
-    if not found:
-        first, last = 0, len(indexList) - 1
-        while first < last:
+    try:
+        if last < 0 or not searchString:
+            return (False, False)
+        elif searchString == indexList[last][0] and indexList[last][3] == 'None':
+            return indexList[last], False
+        elif searchString == indexList[last][0] and indexList[last][3] != 'None':
+            return binaryIndexSearch(indexList, indexList[last][3].lower())
+        while first < last and not found:
+            pos = 0
             midpoint = (first + last) >> 1
-            if searchString <= indexList[midpoint][0]:
+            if indexList[midpoint][0] == searchString:
+                pos = midpoint
+                found = True
+            elif searchString <= indexList[midpoint][0]:
                 last = midpoint
             else:
                 first = midpoint + 1
-        resultIndex = 0
-        while indexList[first + resultIndex][0].startswith(searchString) or indexList[first + resultIndex][0].startswith(searchString + "-"):
-            results.append(indexList[first + resultIndex][0])
-            resultIndex += 1
-            found = True
-    if found and results:
-        return results, True
-    elif found and (indexList[pos][3] != 'None'):
-        return binaryIndexSearch(indexList, indexList[pos][3].lower())
-    elif found:
-        return indexList[pos], False
-    else:
-        return False, False
+        if not found:
+            first, last = 0, len(indexList) - 1
+            while first < last:
+                midpoint = (first + last) >> 1
+                if searchString <= indexList[midpoint][0]:
+                    last = midpoint
+                else:
+                    first = midpoint + 1
+            resultIndex = 0
+            maxIndex = len(indexList) - 1
+            while indexList[first + resultIndex][0].startswith(searchString) or indexList[first + resultIndex][0].startswith(searchString + "-"):
+                results.append(indexList[first + resultIndex][0])
+                resultIndex += 1
+                found = True
+                if resultIndex >= maxIndex:
+                    break
+        if found and results:
+            return results, True
+        elif found and (indexList[pos][3] != 'None'):
+            return binaryIndexSearch(indexList, indexList[pos][3].lower())
+        elif found:
+            return indexList[pos], False
+        else:
+            return False, False
+    except IndexError as err:
+        print(err, "for array", indexList[pos])
+        return (False, False)
 
 def getText(config, fileNumber, articleIndex):
     with open(os.path.join(config['PATH_INDEX_FILES'], ".".join([fileNumber, 'yml'])), 'r') as chunkFH:
@@ -88,8 +101,8 @@ def getInput(config, indexList):
     return
 
 
-def main():
-    with open("config.yml","r") as configYaml:
+def main(configFilePath=".config/config_searcher.yml"):
+    with open(configFilePath, "r") as configYaml:
         # opens config file and stores the information to a variable
         config = yaml.load(configYaml, Loader=yaml.SafeLoader)
     indexList = []

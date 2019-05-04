@@ -1,0 +1,15 @@
+# Specifies the path where the wikipedia dump file lies.
+PATH_WIKI_XML: 'testdata'
+# Specifies the path where the data chunk files are going to be placed.
+PATH_INDEX_FILES: 'testdata/index'
+# The first 10000 Lines of the Wikipedia dump excluding the last incomplete page
+FILENAME_WIKI: 'dump.xml'
+# Specifies the name of the file to store the index data in.
+# The File will be placed into the PATH_WIKI_XML directory.
+FILENAME_INDEX: 'index.txt'
+# Specifies the name of the to store the sorted index data in.
+# The File will be placed into the PATH_WIKI_XML directory.
+FILENAME_SORTED_INDEX: 'sorted_index.txt'
+# API Data
+HOSTNAME: 'localhost'
+PORT: '5000'

@@ -25,7 +25,7 @@ from lxml import etree
 import yaml
 import os
 
-def strip_tag(tag):
+def stripTag(tag):
     """
     Function to strip the tag provided by the xml parser.
 
@@ -41,13 +41,16 @@ def strip_tag(tag):
     Returns:
         str: returns stripped tag if successful. Closes Program if unexpected
         behavior occurs.
+    
+    TODO:
+        * find better solution to find out if tag has meta information or not.
     """
     try:
         if len(tag) > 15:
             tag = tag.rsplit('}', 1)[1]
         return tag
-    except:
-        print("Tag stripping error with:", tag)
+    except IndexError as err:
+        print(err, "Unexpected tag:", tag)
         exit(1)
 
 def indexer(config):
@@ -77,7 +80,7 @@ def indexer(config):
     with open(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_INDEX']), "w") as indexFH:
         # iterates over the wikipedia dump xml tag by tag
         for event, elem in etree.iterparse(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_WIKI']), events=('start', 'end')):
-            tagName = strip_tag(elem.tag)
+            tagName = stripTag(elem.tag)
             # creates new data chunk file if the the 100 articles have been written to the actual file
             if articleCounter == 100:
                 indexFileFH.close()
@@ -153,15 +156,17 @@ def sortIndex(config):
     Returns:
         int: 0 if successful
     """
-    unsortedIndex = open(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_INDEX']), 'r').readlines()
-    sortedIndex = open(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_SORTED_INDEX']), 'w')
+    unsortedIndexFH = open(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_INDEX']), 'r')
+    unsortedIndex = unsortedIndexFH.readlines()
+    sortedIndexFH = open(os.path.join(config['PATH_WIKI_XML'], config['FILENAME_SORTED_INDEX']), 'w')
     # splits every line once by the delimiter to access the title, then sorts them and stores the result
     for item in sorted(unsortedIndex, key=lambda line: line.split('|', 1)[0]):
-        sortedIndex.write(item)
-    sortedIndex.close()
+        sortedIndexFH.write(item)
+    unsortedIndexFH.close()
+    sortedIndexFH.close()
     return
 
-def main():
+def main(configFilePath=".config/config_indexer.yml"):
     """
     Main Function.
 
@@ -170,12 +175,12 @@ def main():
     Returns:
         int: 0 if the script terminated successfully, 1 if an error occurred.
     """
-    with open("config.yml","r") as configYaml:
+    with open(configFilePath,"r") as configYaml:
         # opens config file and stores the information to a variable
         config = yaml.load(configYaml, Loader=yaml.SafeLoader)
     indexer(config)
     sortIndex(config)
-    return
+    return 
 
 if __name__ == "__main__":
    exit(main())

@@ -17,8 +17,8 @@ def print_content(short, entry, config, textField):
     req = requests.post(":".join(["http://"+config['HOSTNAME'],config['PORT']+"/definition/"]), data=payload)
     updateText(req.json(), textField)
 
-def main():
-    with open("config_frontend.yml","r") as configYaml:
+def main(configFilePath=".config/config_frontend.yml"):
+    with open(configFilePath, "r") as configYaml:
         # opens config file and stores the information to a variable
         config = yaml.load(configYaml, Loader=yaml.SafeLoader)
     

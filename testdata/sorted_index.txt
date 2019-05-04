@@ -1,0 +1,36 @@
+a.a.|0|12|AA
+actinium|0|3|None
+alan smithee|0|1|None
+ang lee|0|5|None
+anschluss (soziologie)|0|7|None
+anschlussfähigkeit|0|8|Anschluss (Soziologie)
+anthony minghella|0|38|None
+aussagenlogik|0|10|None
+autopoiese|0|11|Autopoiesis
+liste von autoren/a|0|13|None
+liste von autoren/b|0|22|None
+liste von autoren/c|0|15|None
+liste von autoren/d|0|23|None
+liste von autoren/e|0|29|None
+liste von autoren/f|0|28|None
+liste von autoren/g|0|20|None
+liste von autoren/h|0|14|None
+liste von autoren/i|0|16|None
+liste von autoren/j|0|18|None
+liste von autoren/k|0|17|None
+liste von autoren/l|0|30|None
+liste von autoren/m|0|26|None
+liste von autoren/n|0|31|None
+liste von autoren/o|0|27|None
+liste von autoren/p|0|32|None
+liste von autoren/q|0|33|None
+liste von autoren/r|0|34|None
+liste von autoren/s|0|24|None
+liste von autoren/t|0|25|None
+liste von autoren/u|0|35|None
+liste von autoren/v|0|19|None
+liste von autoren/w|0|21|None
+liste von autoren/y|0|36|None
+liste von autoren/z|0|37|None
+us-amerikanischer film|0|39|None
+vorsätze für maßeinheiten|0|51|None
