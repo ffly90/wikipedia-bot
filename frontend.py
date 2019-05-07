@@ -1,12 +1,9 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 import tkinter
 import requests
 import yaml
 import json
-
-#from tkinter import Tk, Entry, Button, INSERT
-
-
 
 def updateText(text, textField):
     textField.delete("1.0", "end")

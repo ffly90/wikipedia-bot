@@ -1,8 +1,10 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 import unittest
 import yaml
 import indexer
 import searcher
-import app
+import api
 import frontend
 from indexer import stripTag
 from searcher import binaryIndexSearch

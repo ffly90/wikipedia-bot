@@ -120,7 +120,7 @@ def indexer(config):
             else:
                 if tagName == 'page' and not notAnArticle:
                     # if a page is parsed all the way through, the obtained data is stored.
-                    if redirect and title.lower() == redirect.lower()
+                    if redirect and title.strip().lower() == redirect.strip().lower():
                         # ignore case insensitivity
                         continue
                     try:
