@@ -38,11 +38,11 @@ The api script contains a REST API contains a development webserver that is runn
 The API has one endpoint ("/definition/") and accepts POST requests with an option to receive a long and a short answer.
 Because the index File is loaded into memory there needs to be about 2 GiB of free Memory on the host system!
 
-### Frontend
+## Frontend:
 
 Graphical client to the REST API server.
 
-### Tests
+## Tests:
 
 Some tests are implemented.
 
@@ -52,3 +52,4 @@ Some tests are implemented.
 * Make Webserver a wsgi production server instead of the flask development server
 * Implement more tests
 * Optimize the parsing of the articles to get better (short) results
+
