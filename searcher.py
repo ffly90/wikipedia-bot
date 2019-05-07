@@ -75,6 +75,8 @@ def binaryIndexSearch(indexList, searchString):
     except IndexError as err:
         print(err, "for array", indexList[pos])
         return (False, False)
+    except RecursionError:
+        return "Suche stattdessen nach" + indexList[pos][3], False
 
 def getText(config, fileNumber, articleIndex):
     with open(os.path.join(config['PATH_INDEX_FILES'], ".".join([fileNumber, 'yml'])), 'r') as chunkFH:

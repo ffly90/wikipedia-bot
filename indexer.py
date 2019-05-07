@@ -120,6 +120,9 @@ def indexer(config):
             else:
                 if tagName == 'page' and not notAnArticle:
                     # if a page is parsed all the way through, the obtained data is stored.
+                    if redirect and title.lower() == redirect.lower()
+                        # ignore case insensitivity
+                        continue
                     try:
                         indexData = "|".join([title.lower(), str(fileIndex), str(articleIndex), str(redirect)]) + "\n"
                     except AttributeError as err:
