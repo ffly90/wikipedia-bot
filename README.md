@@ -7,7 +7,7 @@
 * create a folder named index in the same directory
 * fill out all config files in the .config folder
 * run the indexer to get everything set up indexer.py (takes some hours)
-* run api.py to start a development webserver to server the an REST API endpoint
+* run api.py to start a development webserver to serve the REST API endpoint
 * run frontend.py as a client to the API Server to try out the application
 
 ## Files
